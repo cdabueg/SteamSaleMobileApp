@@ -27,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
