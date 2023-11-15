@@ -20,37 +20,65 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
+
+    // Retrofit initialization
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("http://api.steampowered.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    // Create a Retrofit service for the SteamAPI interface
+    private val steamAPI = retrofit.create(SteamAPI::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SteamSaleAppTheme {
                 var search by rememberSaveable { mutableStateOf("") }
                 val showDialog = remember { mutableStateOf(false) }
+                var steamAppList by remember { mutableStateOf<List<SteamApp>>(emptyList()) }
 
                 // Dialog box for search form
                 if (showDialog.value) {
-                    Dialog(onDismissRequest = {showDialog.value = false}) {
+                    Dialog(onDismissRequest = { showDialog.value = false }) {
                         SearchForm(
                             search = search,
-                            onSearchChange = {search = it},
-                            onCancel = {showDialog.value = false},
+                            onSearchChange = { search = it },
+                            onCancel = { showDialog.value = false },
                             onSubmit = {
                                 showDialog.value = false
                             }
                         )
+                    }
+                }
+
+                // Fetch Steam app list from the API
+                LaunchedEffect(Unit) {
+                    val response = steamAPI.getAppList().execute()
+                    if (response.isSuccessful) {
+                        val steamAppListResponse = response.body()
+                        steamAppListResponse?.applist?.apps?.let {
+                            steamAppList = it.take(20) // Limiting to 20 items for demonstration
+                        }
                     }
                 }
 
@@ -111,8 +139,11 @@ class MainActivity : ComponentActivity() {
                         },
                     ) { values ->
                         LazyColumn(contentPadding = values, userScrollEnabled = true) {
-                            items(20) {
-
+                            items(steamAppList) { app ->
+                                Text(
+                                    text = "App ID: ${app.appid}, App Name: ${app.name}",
+                                    modifier = Modifier.padding(16.dp)
+                                )
                             }
                         }
                     }
