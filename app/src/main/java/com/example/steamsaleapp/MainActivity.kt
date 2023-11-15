@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Refresh
@@ -20,131 +22,97 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.window.Dialog
-import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
-import com.google.firebase.Firebase
-import com.google.firebase.database.database
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import androidx.compose.ui.unit.dp
+import com.example.steamsaleapp.API.API_Retrofit_Interface
+import com.example.steamsaleapp.API.App
+import com.example.steamsaleapp.API.RetrofitClient
+import com.example.steamsaleapp.API.SteamApplistResponse
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
-
-    // Retrofit initialization
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://api.steampowered.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    // Create a Retrofit service for the SteamAPI interface
-    private val steamAPI = retrofit.create(SteamAPI::class.java)
+    private val api: API_Retrofit_Interface = RetrofitClient.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SteamSaleAppTheme {
-                var search by rememberSaveable { mutableStateOf("") }
-                val showDialog = remember { mutableStateOf(false) }
-                var steamAppList by remember { mutableStateOf<List<SteamApp>>(emptyList()) }
+            var showDialog by remember { mutableStateOf(false) }
+            var steamAppList by remember { mutableStateOf<List<App>>(emptyList()) }
 
-                // Dialog box for search form
-                if (showDialog.value) {
-                    Dialog(onDismissRequest = { showDialog.value = false }) {
-                        SearchForm(
-                            search = search,
-                            onSearchChange = { search = it },
-                            onCancel = { showDialog.value = false },
-                            onSubmit = {
-                                showDialog.value = false
-                            }
+            LaunchedEffect(Unit) {
+                val response = api.getSteamApplist().execute()
+
+                if (response.isSuccessful) {
+                    val appListResponse = response.body()
+                    appListResponse?.applist?.apps?.let {
+                        steamAppList = it.take(5) // Limiting to 20 items for demonstration
+                    }
+                }
+            }
+
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(text = "Steam Games on Sale")
+                            },
+                            colors = TopAppBarDefaults.smallTopAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         )
-                    }
-                }
-
-                // Fetch Steam app list from the API
-                LaunchedEffect(Unit) {
-                    val response = steamAPI.getAppList().execute()
-                    if (response.isSuccessful) {
-                        val steamAppListResponse = response.body()
-                        steamAppListResponse?.applist?.apps?.let {
-                            steamAppList = it.take(20) // Limiting to 20 items for demonstration
-                        }
-                    }
-                }
-
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(
-                                title = {
-                                    Text(text = "Steam Games on Sale")
-                                },
-                                colors = TopAppBarDefaults.smallTopAppBarColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                    titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                    },
+                    bottomBar = {
+                        BottomAppBar(
+                            modifier = Modifier,
+                            actions = {
+                                Spacer(Modifier.weight(1f))
+                                IconButton(
+                                    modifier = Modifier,
+                                    onClick = { showDialog = true }
+                                ) {
+                                    Icon(
+                                        Icons.Filled.Search,
+                                        contentDescription = "Search List"
+                                    )
+                                }
+                                Spacer(Modifier.weight(1f))
+                                IconButton(
+                                    modifier = Modifier,
+                                    onClick = { /* do something */ }
+                                ) {
+                                    Icon(
+                                        Icons.Filled.Refresh,
+                                        contentDescription = "Reset List",
+                                    )
+                                }
+                                Spacer(Modifier.weight(1f))
+                                IconButton(
+                                    modifier = Modifier,
+                                    onClick = { /* do something */ }
+                                ) {
+                                    Icon(
+                                        Icons.Filled.Build,
+                                        contentDescription = "Build List",
+                                    )
+                                }
+                                Spacer(Modifier.weight(1f))
+                            },
+                        )
+                    },
+                ) { values ->
+                    LazyColumn(contentPadding = values, userScrollEnabled = true) {
+                        items(steamAppList) { app ->
+                            Text(
+                                text = "App ID: ${app.appid}, App Name: ${app.name}",
+                                modifier = Modifier.padding(16.dp)
                             )
-                        },
-                        bottomBar = {
-                            BottomAppBar(
-                                modifier = Modifier,
-                                actions = {
-                                    Spacer(Modifier.weight(1f))
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { showDialog.value = true }
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.Search,
-                                            contentDescription = "Search List"
-                                        )
-                                    }
-                                    Spacer(Modifier.weight(1f))
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { /* do something */ }
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.Refresh,
-                                            contentDescription = "Reset List",
-                                        )
-                                    }
-                                    Spacer(Modifier.weight(1f))
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { /* do something */ }
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.Build,
-                                            contentDescription = "Build List",
-                                        )
-                                    }
-                                    Spacer(Modifier.weight(1f))
-                                },
-                            )
-                        },
-                    ) { values ->
-                        LazyColumn(contentPadding = values, userScrollEnabled = true) {
-                            items(steamAppList) { app ->
-                                Text(
-                                    text = "App ID: ${app.appid}, App Name: ${app.name}",
-                                    modifier = Modifier.padding(16.dp)
-                                )
-                            }
                         }
                     }
                 }
@@ -152,4 +120,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
