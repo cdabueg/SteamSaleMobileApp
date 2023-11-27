@@ -26,7 +26,7 @@ fun SteamGamesApp() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { MarsTopAppBar(scrollBehavior = scrollBehavior) }
+        topBar = { SteamTopAppBar(scrollBehavior = scrollBehavior) }
     ) {
         Surface(
             modifier = Modifier
@@ -42,7 +42,7 @@ fun SteamGamesApp() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modifier) {
+fun SteamTopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modifier) {
     CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
