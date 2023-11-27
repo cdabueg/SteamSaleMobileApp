@@ -5,12 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.steamsaleapp.model.SteamGame
 import com.example.steamsaleapp.network.SteamApi
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 sealed interface SteamUiState {
-    data class Success(val games: String) : SteamUiState
+    data class Success(val games: SteamGame) : SteamUiState
     object Error : SteamUiState
     object Loading : SteamUiState
 }
@@ -36,7 +37,7 @@ class SteamSaleViewModel: ViewModel() {
             steamUiState = try {
                 val listResult = SteamApi.retrofitService.getSteamGames()
                 SteamUiState.Success(
-                    "Success: Steam games retrieved"
+                    listResult
                 )
             } catch (e: IOException) {
                 SteamUiState.Error

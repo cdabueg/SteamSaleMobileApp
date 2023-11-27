@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.steamsaleapp.R
+import com.example.steamsaleapp.model.SteamGame
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
 
 @Composable
@@ -61,12 +62,12 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
  * ResultScreen displaying number of games retrieved.
  */
 @Composable
-fun ResultScreen(games: String, modifier: Modifier = Modifier) {
+fun ResultScreen(games: SteamGame, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        Text(text = games)
+        Text(text = games.toString())
     }
 }
 
@@ -74,6 +75,6 @@ fun ResultScreen(games: String, modifier: Modifier = Modifier) {
 @Composable
 fun ResultScreenPreview() {
     SteamSaleAppTheme {
-        ResultScreen(stringResource(R.string.placeholder_result))
+//        ResultScreen(stringResource(R.string.placeholder_result))
     }
 }
