@@ -27,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
+import com.example.steamsaleapp.ui.SteamGamesApp
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,63 +58,64 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(
-                                title = {
-                                    Text(text = "Steam Games on Sale")
-                                },
-                                colors = TopAppBarDefaults.smallTopAppBarColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                    titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            )
-                        },
-                        bottomBar = {
-                            BottomAppBar(
-                                modifier = Modifier,
-                                actions = {
-                                    Spacer(Modifier.weight(1f))
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { showDialog.value = true }
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.Search,
-                                            contentDescription = "Search List"
-                                        )
-                                    }
-                                    Spacer(Modifier.weight(1f))
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { /* do something */ }
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.Refresh,
-                                            contentDescription = "Reset List",
-                                        )
-                                    }
-                                    Spacer(Modifier.weight(1f))
-                                    IconButton(
-                                        modifier = Modifier,
-                                        onClick = { /* do something */ }
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.Build,
-                                            contentDescription = "Build List",
-                                        )
-                                    }
-                                    Spacer(Modifier.weight(1f))
-                                },
-                            )
-                        },
-                    ) { values ->
-                        LazyColumn(contentPadding = values, userScrollEnabled = true) {
-                            items(20) {
-
-                            }
-                        }
-                    }
+//                    Scaffold(
+//                        topBar = {
+//                            TopAppBar(
+//                                title = {
+//                                    Text(text = "Steam Games on Sale")
+//                                },
+//                                colors = TopAppBarDefaults.smallTopAppBarColors(
+//                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+//                                    titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+//                                )
+//                            )
+//                        },
+//                        bottomBar = {
+//                            BottomAppBar(
+//                                modifier = Modifier,
+//                                actions = {
+//                                    Spacer(Modifier.weight(1f))
+//                                    IconButton(
+//                                        modifier = Modifier,
+//                                        onClick = { showDialog.value = true }
+//                                    ) {
+//                                        Icon(
+//                                            Icons.Filled.Search,
+//                                            contentDescription = "Search List"
+//                                        )
+//                                    }
+//                                    Spacer(Modifier.weight(1f))
+//                                    IconButton(
+//                                        modifier = Modifier,
+//                                        onClick = { /* do something */ }
+//                                    ) {
+//                                        Icon(
+//                                            Icons.Filled.Refresh,
+//                                            contentDescription = "Reset List",
+//                                        )
+//                                    }
+//                                    Spacer(Modifier.weight(1f))
+//                                    IconButton(
+//                                        modifier = Modifier,
+//                                        onClick = { /* do something */ }
+//                                    ) {
+//                                        Icon(
+//                                            Icons.Filled.Build,
+//                                            contentDescription = "Build List",
+//                                        )
+//                                    }
+//                                    Spacer(Modifier.weight(1f))
+//                                },
+//                            )
+//                        },
+//                    ) { values ->
+//                        LazyColumn(contentPadding = values, userScrollEnabled = true) {
+//                            items(20) {
+//
+//                            }
+//                        }
+//                    }
+                    SteamGamesApp()
                 }
             }
         }
