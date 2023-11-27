@@ -17,9 +17,8 @@ private val retrofit = Retrofit.Builder()
 
 interface SteamApiService {
     // Http method and endpoint
-    @GET("ISteamApps/GetAppList/v0002/")
-    suspend fun getSteamGames(): List<SteamGame>
-//    suspend fun getSteamGames(): String
+    @GET("ISteamApps/GetAppList/v0002/?format=json")
+    suspend fun getSteamGames(): SteamGame
 
     // Photos endpoint in quotes
 //    @GET("")

@@ -36,7 +36,7 @@ class SteamSaleViewModel: ViewModel() {
             steamUiState = try {
                 val listResult = SteamApi.retrofitService.getSteamGames()
                 SteamUiState.Success(
-                    "Success: ${listResult.size} Steam games retrieved"
+                    "Success: Steam games retrieved"
                 )
             } catch (e: IOException) {
                 SteamUiState.Error

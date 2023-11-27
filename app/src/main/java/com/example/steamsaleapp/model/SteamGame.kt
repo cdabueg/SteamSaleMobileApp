@@ -9,11 +9,11 @@ data class SteamGame(
 
 @Serializable
 data class Applist(
-    val apps: ArrayList<App>
+    val apps: List<App>
 )
 
 @Serializable
 data class App(
     val appid: Int,
-    val name: String = ""
+    val name: String
 )
