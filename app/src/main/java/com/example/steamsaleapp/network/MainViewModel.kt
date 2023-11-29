@@ -1,4 +1,4 @@
-package com.example.steamsaleapp.ui.screens
+package com.example.steamsaleapp.network
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,41 +6,36 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.steamsaleapp.model.GamesList
-import com.example.steamsaleapp.network.SteamApi
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-sealed interface SteamUiState {
-    data class Success(val games: GamesList) : SteamUiState
-    object Error : SteamUiState
-    object Loading : SteamUiState
-}
 
-class SteamSaleViewModel: ViewModel() {
+
+class MainViewModel: ViewModel() {
     /** The mutable State that stores the status of the most recent request */
-    var steamUiState: SteamUiState by mutableStateOf(SteamUiState.Loading)
+    var screenState: ScreenState by mutableStateOf(ScreenState.Loading)
         private set
 
     /**
      * Call getSteamApps() on init so we can display status immediately.
      */
     init {
-        getSteamApps()
+        getSteamGames()
     }
 
     /**
      * Gets Steam Sale information from the Steam API Retrofit service and updates the
      * [GamesList] [List] [MutableList].
      */
-    private fun getSteamApps() {
+    private fun getSteamGames() {
         viewModelScope.launch {
-            steamUiState = try {
+            screenState = try {
                 val listResult = SteamApi.retrofitService.getSteamGames()
-                SteamUiState.Success(
+                ScreenState.Success(
                     listResult
                 )
             } catch (e: IOException) {
-                SteamUiState.Error
+                ScreenState.Error
             }
         }
     }

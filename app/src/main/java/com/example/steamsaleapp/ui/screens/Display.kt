@@ -4,20 +4,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.steamsaleapp.network.ScreenState
 
 /**
  * Display displaying status or result.
  */
 @Composable
 fun Display(
-    steamUiState: SteamUiState,
+    screenState: ScreenState,
     modifier: Modifier = Modifier
 ) {
-    when (steamUiState) {
-        is SteamUiState.Error -> Error( modifier = modifier.fillMaxSize())
-        is SteamUiState.Loading -> Loading(modifier = modifier.fillMaxSize())
-        is SteamUiState.Success -> Result(
-            steamUiState.games, modifier = modifier.fillMaxWidth()
+    when (screenState) {
+        is ScreenState.Error -> Error( modifier = modifier.fillMaxSize())
+        is ScreenState.Loading -> Loading(modifier = modifier.fillMaxSize())
+        is ScreenState.Success -> Result(
+            screenState.games, modifier = modifier.fillMaxWidth()
         )
 
     }
