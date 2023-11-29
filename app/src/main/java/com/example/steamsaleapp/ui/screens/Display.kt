@@ -18,7 +18,7 @@ fun Display(
         is ScreenState.Error -> Error( modifier = modifier.fillMaxSize())
         is ScreenState.Loading -> Loading(modifier = modifier.fillMaxSize())
         is ScreenState.Success -> Result(
-            screenState.games, modifier = modifier.fillMaxWidth()
+            screenState.gamesList, modifier = modifier.fillMaxWidth()
         )
 
     }

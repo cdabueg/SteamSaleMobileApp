@@ -13,11 +13,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.steamsaleapp.network.MainViewModel
+import com.example.steamsaleapp.network.GamesListManager
 import com.example.steamsaleapp.ui.components.BottomBar
 import com.example.steamsaleapp.ui.components.TopBar
-import com.example.steamsaleapp.ui.screens.Display
+import com.example.steamsaleapp.ui.screens.Games
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,10 +41,13 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(innerPadding),
                         ) {
-                            val mainViewModel: MainViewModel = viewModel()
-                            Display(
-                                screenState = mainViewModel.screenState
-                            )
+//                            val mainViewModel: MainViewModel = viewModel()
+//                            Display(
+//                                screenState = mainViewModel.screenState
+//                            )
+                            // fetch api data when class is initialized
+                            val gamesListManager:GamesListManager = GamesListManager()
+                            Games(gamesListManager)
                         }
                     }
                 }

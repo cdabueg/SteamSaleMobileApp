@@ -40,6 +40,7 @@ fun BottomBar(){
         modifier = Modifier,
         actions = {
             Spacer(Modifier.weight(1f))
+            // Search button
             IconButton(
                 modifier = Modifier,
                 onClick = { showDialog.value = true }
@@ -50,6 +51,7 @@ fun BottomBar(){
                 )
             }
             Spacer(Modifier.weight(1f))
+            // Reset button
             IconButton(
                 modifier = Modifier,
                 onClick = { /* do something */ }
@@ -60,9 +62,12 @@ fun BottomBar(){
                 )
             }
             Spacer(Modifier.weight(1f))
+            // Update database button
             IconButton(
                 modifier = Modifier,
-                onClick = { /* do something */ }
+                onClick = {
+
+                }
             ) {
                 Icon(
                     Icons.Filled.Build,

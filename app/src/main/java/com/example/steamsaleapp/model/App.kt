@@ -5,7 +5,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class GamesList(
-    @Json(name = "apps")
-    val apps: List<App>? = emptyList()
+data class App(
+    @Json(name = "appid")
+    val appid: Int,
+    @Json(name = "name")
+    val name: String
 )

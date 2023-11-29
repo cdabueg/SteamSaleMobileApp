@@ -16,6 +16,6 @@ fun Result(games: GamesList, modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        Text(text = "Retrieved ${games.applist.apps.size} Steam Games")
+        Text(text = "Retrieved ${games.apps?.size} Steam Games")
     }
 }
