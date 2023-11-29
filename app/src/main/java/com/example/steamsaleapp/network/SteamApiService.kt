@@ -1,6 +1,6 @@
 package com.example.steamsaleapp.network
 
-import com.example.steamsaleapp.model.SteamGame
+import com.example.steamsaleapp.model.GamesList
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -18,11 +18,7 @@ private val retrofit = Retrofit.Builder()
 interface SteamApiService {
     // Http method and endpoint
     @GET("ISteamApps/GetAppList/v0002/?format=json")
-    suspend fun getSteamGames(): SteamGame
-
-    // Photos endpoint in quotes
-//    @GET("")
-//    suspend fun getGamePhotos(): List<SteamGamePhoto>
+    suspend fun getSteamGames(): GamesList
 }
 
 object SteamApi {

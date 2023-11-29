@@ -5,13 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.steamsaleapp.model.SteamGame
+import com.example.steamsaleapp.model.GamesList
 import com.example.steamsaleapp.network.SteamApi
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 sealed interface SteamUiState {
-    data class Success(val games: SteamGame) : SteamUiState
+    data class Success(val games: GamesList) : SteamUiState
     object Error : SteamUiState
     object Loading : SteamUiState
 }
@@ -30,7 +30,7 @@ class SteamSaleViewModel: ViewModel() {
 
     /**
      * Gets Steam Sale information from the Steam API Retrofit service and updates the
-     * [SteamGame] [List] [MutableList].
+     * [GamesList] [List] [MutableList].
      */
     private fun getSteamApps() {
         viewModelScope.launch {

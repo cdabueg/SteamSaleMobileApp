@@ -1,4 +1,4 @@
-package com.example.steamsaleapp
+package com.example.steamsaleapp.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

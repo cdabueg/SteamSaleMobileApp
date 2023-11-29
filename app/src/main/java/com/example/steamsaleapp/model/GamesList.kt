@@ -3,7 +3,7 @@ package com.example.steamsaleapp.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SteamGame(
+data class GamesList(
     val applist: Applist
 )
 
