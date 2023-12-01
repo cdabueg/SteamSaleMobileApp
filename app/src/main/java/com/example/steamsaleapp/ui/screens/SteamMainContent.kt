@@ -20,12 +20,11 @@ fun SteamMainContent(
     modifier: Modifier = Modifier
 ) {
     when (steamUiState) {
-        is SteamUiState.Error -> Error( modifier = modifier.fillMaxSize())
         is SteamUiState.Loading -> Loading(modifier = modifier.fillMaxSize())
-        is SteamUiState.Success -> ResultMars(
-            "", modifier = modifier.fillMaxWidth()
+        is SteamUiState.Error -> Error( modifier = modifier.fillMaxSize())
+        is SteamUiState.Success -> ResultSteam(
+            steamUiState.gamesList, modifier = modifier.fillMaxWidth()
         )
-
     }
 }
 

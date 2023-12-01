@@ -20,6 +20,7 @@ import java.io.IOException
  * UI state for the MarsMainContent screen
  */
 sealed interface MarsUiState {
+    // Requires primary constructor parameter. val photos
     data class Success(val photos: String) : MarsUiState
     object Error : MarsUiState
     object Loading : MarsUiState
@@ -38,8 +39,7 @@ class MarsViewModel(private val marsPhotosRepository: MarsPhotosRepository) : Vi
     }
 
     /**
-     * Gets Mars photos information from the Mars API Retrofit service and updates the
-     * [MarsPhoto] [List] [MutableList].
+     * Gets Mars photos information from the Mars API Retrofit service
      */
     fun getMarsPhotos() {
         viewModelScope.launch {
