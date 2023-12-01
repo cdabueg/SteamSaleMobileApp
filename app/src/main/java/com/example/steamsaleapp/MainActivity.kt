@@ -14,13 +14,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.steamsaleapp.network.GamesListManager
 import com.example.steamsaleapp.ui.components.BottomBar
 import com.example.steamsaleapp.ui.components.TopBar
-import com.example.steamsaleapp.ui.screens.Games
-import com.example.steamsaleapp.ui.screens.HomeScreen
-import com.example.steamsaleapp.ui.screens.MarsViewModel
+import com.example.steamsaleapp.ui.screens.MarsMainContent
+import com.example.steamsaleapp.ui.screens.SteamMainContent
+import com.example.steamsaleapp.viewmodel.MarsViewModel
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
+import com.example.steamsaleapp.viewmodel.SteamViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -43,11 +43,11 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(innerPadding),
                         ) {
-                            // fetch api data when class is initialized
+//                            val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
+//                            SteamMainContent(steamUiState = steamViewModel.steamUiState)
                             val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
-                            HomeScreen(marsUiState = marsViewModel.marsUiState)
-//                            val gamesListManager:GamesListManager = GamesListManager()
-//                            Games(gamesListManager)
+                            MarsMainContent(marsUiState = marsViewModel.marsUiState)
+
                         }
                     }
                 }

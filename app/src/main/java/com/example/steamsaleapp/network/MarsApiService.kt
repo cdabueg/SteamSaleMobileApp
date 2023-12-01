@@ -11,7 +11,8 @@ private const val BASE_URL =
     "https://android-kotlin-fun-mars-server.appspot.com"
 
 /**
- * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
+ * Uses a kotlinx.serialization converter
+ * Use the Retrofit builder to build a retrofit object.
  */
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))

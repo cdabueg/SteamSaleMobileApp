@@ -1,4 +1,4 @@
-package com.example.steamsaleapp.ui.screens
+package com.example.steamsaleapp.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +17,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 /**
- * UI state for the Home screen
+ * UI state for the MarsMainContent screen
  */
 sealed interface MarsUiState {
     data class Success(val photos: String) : MarsUiState
@@ -45,8 +45,6 @@ class MarsViewModel(private val marsPhotosRepository: MarsPhotosRepository) : Vi
         viewModelScope.launch {
             marsUiState = MarsUiState.Loading
             marsUiState = try {
-//                val listResult = MarsApi.retrofitService.getPhotos()
-//                val marsPhotosRepository = NetworkMarsPhotosRepository()
                 val listResult = marsPhotosRepository.getMarsPhotos()
                 MarsUiState.Success(
                     "Success: ${listResult.size} Mars photos retrieved"

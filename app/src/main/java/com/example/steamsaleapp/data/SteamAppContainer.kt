@@ -1,18 +1,19 @@
 package com.example.steamsaleapp.data
 
-import com.example.steamsaleapp.network.MarsApiService
+import com.example.steamsaleapp.network.SteamApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
-interface AppContainer {
-    val marsPhotosRepository: MarsPhotosRepository
+interface SteamAppContainer {
+    val steamGamesListRepository: SteamGamesListRepository
 }
 
-class DefaultAppContainer : AppContainer {
+class DefaultSteamAppContainer : SteamAppContainer {
 
-    private val baseUrl = "https://android-kotlin-fun-mars-server.appspot.com"
+    private val baseUrl =
+        "https://api.steampowered.com/"
 
     /**
      * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
@@ -22,11 +23,11 @@ class DefaultAppContainer : AppContainer {
         .baseUrl(baseUrl)
         .build()
 
-    private val retrofitService: MarsApiService by lazy {
-        retrofit.create(MarsApiService::class.java)
+    private val retrofitService: SteamApiService by lazy {
+        retrofit.create(SteamApiService::class.java)
     }
 
-    override val marsPhotosRepository: MarsPhotosRepository by lazy {
-        NetworkMarsPhotosRepository(retrofitService)
+    override val steamGamesListRepository: SteamGamesListRepository by lazy {
+        NetworkSteamGamesListRepository(retrofitService)
     }
 }

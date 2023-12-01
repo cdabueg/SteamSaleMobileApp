@@ -1,4 +1,4 @@
-package com.example.steamsaleapp.ui.screens
+package com.example.steamsaleapp.ui.screens.commonstates
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
