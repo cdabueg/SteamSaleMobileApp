@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.steamsaleapp.SteamSaleApplication
 import com.example.steamsaleapp.data.SteamGamesListRepository
+import com.example.steamsaleapp.model.SteamGamesList
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -20,7 +21,7 @@ import java.io.IOException
  */
 sealed interface SteamUiState {
     // Requires primary constructor parameter. val gamesList
-    data class Success(val gamesList: String) : SteamUiState
+    data class Success(val gamesList: SteamGamesList) : SteamUiState
     object Error : SteamUiState
     object Loading : SteamUiState
 }
@@ -46,7 +47,8 @@ class SteamViewModel(private val steamGamesListRepository: SteamGamesListReposit
             steamUiState = try {
                 val listResult = steamGamesListRepository.getSteamGamesList()
                 SteamUiState.Success(
-                    "Success: ${listResult.applist.apps.size} Steam Games on the list."
+//                    "Success: ${listResult} Steam Games on the list."
+                    listResult
                 )
             } catch (e: IOException) {
                 SteamUiState.Error

@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.steamsaleapp.model.SteamGamesList
 import com.example.steamsaleapp.ui.screens.commonstates.Error
 import com.example.steamsaleapp.ui.screens.commonstates.Loading
 import com.example.steamsaleapp.viewmodel.SteamUiState
@@ -32,11 +33,11 @@ fun SteamMainContent(
  * Result displaying number of games retrieved.
  */
 @Composable
-fun ResultSteam(games: String, modifier: Modifier = Modifier) {
+fun ResultSteam(gamesList: SteamGamesList, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        Text(text = games)
+        Text(text = gamesList.toString())
     }
 }
