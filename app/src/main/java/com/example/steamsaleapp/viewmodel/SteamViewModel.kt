@@ -45,6 +45,7 @@ class SteamViewModel(private val steamGamesListRepository: SteamGamesListReposit
         viewModelScope.launch {
             steamUiState = SteamUiState.Loading
             steamUiState = try {
+                // Fetch the list of Steam games in a coroutine and listResult is the result.
                 val listResult = steamGamesListRepository.getSteamGamesList()
                 SteamUiState.Success(
 //                    "Success: ${listResult} Steam Games on the list."

@@ -45,6 +45,7 @@ class MarsViewModel(private val marsPhotosRepository: MarsPhotosRepository) : Vi
         viewModelScope.launch {
             marsUiState = MarsUiState.Loading
             marsUiState = try {
+                // Fetch a list of Mars photos in a coroutine and listResult is the result.
                 val listResult = marsPhotosRepository.getMarsPhotos()
                 MarsUiState.Success(
                     "Success: ${listResult.size} Mars photos retrieved"
