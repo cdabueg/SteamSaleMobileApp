@@ -5,4 +5,9 @@
     <string name="loading">Loading</string>
     <string name="placeholder_success">Placeholder text</string>
     <string name="placeholder_result">Placeholder result text</string>
+    <string name="placeholder_error">Placeholder error text</string>
+    <string name="placeholder_loading">Placeholder loading text</string>
+    <string name="placeholder_retry">Placeholder retry text</string>
+    <string name="placeholder_empty">Placeholder empty text</string>
+    <string name="mars_photo">Mars photo</string>
 </resources>
