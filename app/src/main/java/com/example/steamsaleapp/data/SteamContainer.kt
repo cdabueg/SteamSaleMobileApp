@@ -12,8 +12,8 @@ interface SteamContainer {
 
 class DefaultSteamContainer : SteamContainer {
     private val baseUrl =
-        "https://api.steampowered.com/"
-//        "https://store.steampowered.com/api/"
+//        "https://api.steampowered.com/"
+        "https://store.steampowered.com/api/"
 
     /** Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter */
     private val retrofit = Retrofit.Builder()

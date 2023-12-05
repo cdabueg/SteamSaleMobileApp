@@ -25,7 +25,8 @@ fun BottomBar(){
     var search by rememberSaveable { mutableStateOf("") }
     val showDialog = remember { mutableStateOf(false) }
     val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
-    val refreshAction = steamViewModel::getSteamGamesList
+//    val refreshAction = steamViewModel::getSteamGamesList
+    val refreshAction = steamViewModel::getGameDetails
 
     // Dialog box for search form
     if (showDialog.value) {

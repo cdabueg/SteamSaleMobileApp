@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.steamsaleapp.SteamSaleApplication
 import com.example.steamsaleapp.data.SteamRepository
+import com.example.steamsaleapp.model.SteamGameDetails
 import com.example.steamsaleapp.model.SteamGamesList
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -19,7 +20,8 @@ import java.io.IOException
 /** UI state for the SteamMainContent screen */
 sealed interface SteamUiState {
     // Requires primary constructor parameter. val gamesList
-    data class Success(val gamesList: SteamGamesList) : SteamUiState
+    data class SuccessList(val gamesList: SteamGamesList) : SteamUiState
+    data class SuccessDetails(val gamesDetails: SteamGameDetails) : SteamUiState
     object Error : SteamUiState
     object Loading : SteamUiState
     object Empty : SteamUiState
@@ -39,7 +41,7 @@ class SteamViewModel(private val steamRepository: SteamRepository) : ViewModel()
             steamUiState = SteamUiState.Loading
             steamUiState = try {
                 // Fetch the list of Steam games in a coroutine.
-                SteamUiState.Success(
+                SteamUiState.SuccessList(
                     steamRepository.getSteamGamesList()
                 )
             } catch (e: IOException) {
@@ -50,29 +52,29 @@ class SteamViewModel(private val steamRepository: SteamRepository) : ViewModel()
         }
     }
 
-//    /** Gets Steam games details from the Steam API Retrofit service */
-//    fun getGameDetails() {
-//        viewModelScope.launch {
-//            steamUiState = SteamUiState.Loading
-//            steamUiState = try {
-//                // Fetch the game details in a coroutine.
-//                SteamUiState.Success(
-//                    steamRepository.getSteamGameDetails(1325200)
-//                )
-//            } catch (e: IOException) {
-//                SteamUiState.Error
-//            } catch (e: HttpException) {
-//                SteamUiState.Error
-//            }
-//        }
-//    }
+    /** Gets Steam games details from the Steam API Retrofit service */
+    fun getGameDetails() {
+        viewModelScope.launch {
+            steamUiState = SteamUiState.Loading
+            steamUiState = try {
+                // Fetch the game details in a coroutine.
+                SteamUiState.SuccessDetails(
+                    steamRepository.getSteamGameDetails(1325200)
+                )
+            } catch (e: IOException) {
+                SteamUiState.Error
+            } catch (e: HttpException) {
+                SteamUiState.Error
+            }
+        }
+    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as SteamSaleApplication)
-                val steamGamesListRepository = application.container.steamRepository
-                SteamViewModel(steamRepository = steamGamesListRepository)
+                val steamRepository = application.container.steamRepository
+                SteamViewModel(steamRepository = steamRepository)
             }
         }
     }

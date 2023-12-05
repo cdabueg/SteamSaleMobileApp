@@ -31,14 +31,19 @@ fun SteamMainContent(
 ) {
     val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
     val steamUiState = steamViewModel.steamUiState
-    val retryAction = steamViewModel::getSteamGamesList
+//    val refreshAction = steamViewModel::getSteamGamesList
+    val refreshAction = steamViewModel::getGameDetails
 
     when (steamUiState) {
         is SteamUiState.Empty -> Empty(modifier = modifier.fillMaxSize())
         is SteamUiState.Loading -> Loading(modifier = modifier.fillMaxSize())
-        is SteamUiState.Error -> Error(retryAction, modifier = modifier.fillMaxSize())
-        is SteamUiState.Success -> SteamGamesListGrid(
+        is SteamUiState.Error -> Error(refreshAction, modifier = modifier.fillMaxSize())
+        is SteamUiState.SuccessList -> SteamGamesListGrid(
             steamUiState.gamesList.applist,
+            modifier
+        )
+        is SteamUiState.SuccessDetails -> SteamGameDetailsCard(
+            steamUiState.gamesDetails.x1325200.data,
             modifier
         )
     }
@@ -56,24 +61,24 @@ fun SteamGameDetailsCard(
     ) {
         Text(text = "Name: ${gameDetails.name}")
         Text(text = "Description: ${gameDetails.shortDescription}")
-//        Text(text = "LogoUrl: ${gameDetails.capsuleImagev5}")
-//        Text(text = "BackgroundUrl: ${gameDetails.background}")
-//        Text(text = "Release Date: ${gameDetails.releaseDate?.date}")
-//        Text(text = "Categories: ${gameDetails.categories?.joinToString(separator = ", ")}")
-//        Text(text = "Genres: ${gameDetails.genres?.joinToString(separator = ", ")}")
-//        Text(text = "Developers: ${gameDetails.developers?.joinToString(separator = ", ")}")
-//        Text(text = "Publishers: ${gameDetails.publishers?.joinToString(separator = ", ")}")
-//        val platforms = mutableListOf<String>()
-//        if (gameDetails.platforms?.windows == true) {
-//            platforms.add("Windows")
-//        }
-//        if (gameDetails.platforms?.mac == true) {
-//            platforms.add("Mac")
-//        }
-//        if (gameDetails.platforms?.linux == true) {
-//            platforms.add("Linux")
-//        }
-//        Text(text = "Platforms: ${platforms.joinToString(separator = ", ")}")
+        Text(text = "LogoUrl: ${gameDetails.capsuleImagev5}")
+        Text(text = "BackgroundUrl: ${gameDetails.background}")
+        Text(text = "Release Date: ${gameDetails.releaseDate?.date}")
+        Text(text = "Categories: ${gameDetails.categories?.map { "${it?.description}" }?.joinToString(separator = ", ")}")
+        Text(text = "Genres: ${gameDetails.genres?.map { "${it?.description}" }?.joinToString(separator = ", ")}")
+        Text(text = "Developers: ${gameDetails.developers?.joinToString(separator = ", ")}")
+        Text(text = "Publishers: ${gameDetails.publishers?.joinToString(separator = ", ")}")
+        val platforms = mutableListOf<String>()
+        if (gameDetails.platforms?.windows == true) {
+            platforms.add("Windows")
+        }
+        if (gameDetails.platforms?.mac == true) {
+            platforms.add("Mac")
+        }
+        if (gameDetails.platforms?.linux == true) {
+            platforms.add("Linux")
+        }
+        Text(text = "Platforms: ${platforms.joinToString(separator = ", ")}")
     }
 }
 

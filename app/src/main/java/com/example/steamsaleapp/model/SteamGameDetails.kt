@@ -7,8 +7,6 @@ import kotlinx.serialization.Serializable
 data class SteamGameDetails(
     @SerialName("1325200")
     val x1325200: X1325200 = X1325200()
-//    @SerialName("id")
-//    var id: Int? = 0,
 )
 
 @Serializable
