@@ -1,6 +1,5 @@
 package com.example.steamsaleapp.data
 
-import com.example.steamsaleapp.model.App
 import com.example.steamsaleapp.model.SteamGamesList
 import com.example.steamsaleapp.network.SteamApiService
 

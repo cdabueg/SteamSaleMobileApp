@@ -24,7 +24,7 @@ private val retrofit = Retrofit.Builder()
  * Retrofit service object for creating api calls
  */
 interface SteamApiService {
-    @GET("ISteamApps/GetAppList/v0002/?format=json")
+    @GET("ISteamApps/GetAppList/v2/")
     suspend fun getSteamGamesList(): SteamGamesList
 }
 

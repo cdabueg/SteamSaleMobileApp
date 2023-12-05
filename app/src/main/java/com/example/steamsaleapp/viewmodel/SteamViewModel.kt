@@ -60,7 +60,7 @@ class SteamViewModel(private val steamGamesListRepository: SteamGamesListReposit
 //    /**
 //     * Gets Steam games details from the Steam API Retrofit service
 //     */
-//    fun getGamesDetails() {
+//    fun getGameDetails() {
 //        viewModelScope.launch {
 //            steamUiState = SteamUiState.Loading
 //            steamUiState = try {

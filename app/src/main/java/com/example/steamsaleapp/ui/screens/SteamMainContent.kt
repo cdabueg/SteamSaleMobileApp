@@ -37,10 +37,6 @@ fun SteamMainContent(
     when (steamUiState) {
         is SteamUiState.Loading -> Loading(modifier = modifier.fillMaxSize())
         is SteamUiState.Error -> Error(retryAction, modifier = modifier.fillMaxSize())
-
-//        is SteamUiState.Success -> ResultSteam(
-//            steamUiState.gamesList, modifier = modifier.fillMaxWidth()
-//        )
         is SteamUiState.Success -> SteamSaleTable(
             steamUiState.gamesList.applist,
             modifier
@@ -49,7 +45,7 @@ fun SteamMainContent(
 }
 
 /**
- * Result displaying number of games retrieved.
+ * ResultSteam displaying number of games retrieved.
  */
 @Composable
 fun ResultSteam(gamesList: SteamGamesList, modifier: Modifier = Modifier) {
@@ -61,6 +57,9 @@ fun ResultSteam(gamesList: SteamGamesList, modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * SteamGameCard displaying game details.
+ */
 @Composable
 fun SteamGameCard(
     game: App,
@@ -75,6 +74,9 @@ fun SteamGameCard(
     }
 }
 
+/**
+ * SteamSaleTable displaying list of games.
+ */
 @Composable
 fun SteamSaleTable(
     games: Applist,
@@ -100,6 +102,9 @@ fun SteamSaleTable(
     }
 }
 
+/**
+ * PreviewSteamMainContent displaying preview.
+ */
 @Preview(showBackground = true)
 @Composable
 fun PreviewSteamMainContent() {

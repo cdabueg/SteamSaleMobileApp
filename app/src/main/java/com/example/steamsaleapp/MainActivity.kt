@@ -16,9 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.steamsaleapp.ui.components.BottomBar
 import com.example.steamsaleapp.ui.components.TopBar
-import com.example.steamsaleapp.ui.screens.MarsMainContent
 import com.example.steamsaleapp.ui.screens.SteamMainContent
-import com.example.steamsaleapp.viewmodel.MarsViewModel
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
 import com.example.steamsaleapp.viewmodel.SteamViewModel
 
@@ -47,15 +45,7 @@ class MainActivity : ComponentActivity() {
                             SteamMainContent(
                                 steamUiState = steamViewModel.steamUiState,
                                 retryAction = steamViewModel::getSteamGamesList,
-                                )
-//                            val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
-//                            MarsMainContent(
-//                                marsUiState = marsViewModel.marsUiState,
-//                                retryAction = marsViewModel::getMarsPhotos,
-//                            )
-                            // Note: Change android:name=".<Application Name>" in the manifest file to change the default screen
-                            // SteamSaleApplication
-                            // MarsPhotosApplication
+                            )
                         }
                     }
                 }
