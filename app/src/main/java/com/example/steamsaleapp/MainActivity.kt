@@ -43,10 +43,16 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(innerPadding),
                         ) {
-//                            val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
-//                            SteamMainContent(steamUiState = steamViewModel.steamUiState)
-                            val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
-                            MarsMainContent(marsUiState = marsViewModel.marsUiState)
+                            val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
+                            SteamMainContent(
+                                steamUiState = steamViewModel.steamUiState,
+                                retryAction = steamViewModel::getSteamGamesList,
+                                )
+//                            val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
+//                            MarsMainContent(
+//                                marsUiState = marsViewModel.marsUiState,
+//                                retryAction = marsViewModel::getMarsPhotos,
+//                            )
                             // Note: Change android:name=".<Application Name>" in the manifest file to change the default screen
                             // SteamSaleApplication
                             // MarsPhotosApplication

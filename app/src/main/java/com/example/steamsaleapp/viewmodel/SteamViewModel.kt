@@ -45,11 +45,9 @@ class SteamViewModel(private val steamGamesListRepository: SteamGamesListReposit
         viewModelScope.launch {
             steamUiState = SteamUiState.Loading
             steamUiState = try {
-                // Fetch the list of Steam games in a coroutine and listResult is the result.
-                val listResult = steamGamesListRepository.getSteamGamesList()
+                // Fetch the list of Steam games in a coroutine.
                 SteamUiState.Success(
-//                    "Success: ${listResult} Steam Games on the list."
-                    listResult
+                    steamGamesListRepository.getSteamGamesList()
                 )
             } catch (e: IOException) {
                 SteamUiState.Error
@@ -58,6 +56,25 @@ class SteamViewModel(private val steamGamesListRepository: SteamGamesListReposit
             }
         }
     }
+
+//    /**
+//     * Gets Steam games details from the Steam API Retrofit service
+//     */
+//    fun getGamesDetails() {
+//        viewModelScope.launch {
+//            steamUiState = SteamUiState.Loading
+//            steamUiState = try {
+//                // Fetch the game details in a coroutine.
+//                SteamUiState.Success(
+//                    steamGamesListRepository.getSteamGamesList()
+//                )
+//            } catch (e: IOException) {
+//                SteamUiState.Error
+//            } catch (e: HttpException) {
+//                SteamUiState.Error
+//            }
+//        }
+//    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

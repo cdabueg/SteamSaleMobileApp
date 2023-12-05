@@ -21,11 +21,6 @@ import java.io.IOException
  */
 sealed interface MarsUiState {
     // Requires primary constructor parameter. val photos
-    // A string of the number of photos retrieved
-//    data class Success(val photos: String) : MarsUiState
-    // Sing photo
-//    data class Success(val photos: MarsPhoto) : MarsUiState
-    // All photos
     data class Success(val photos: List<MarsPhoto>) : MarsUiState
     object Error : MarsUiState
     object Loading : MarsUiState
@@ -50,17 +45,8 @@ class MarsViewModel(private val marsPhotosRepository: MarsPhotosRepository) : Vi
         viewModelScope.launch {
             marsUiState = MarsUiState.Loading
             marsUiState = try {
-                // Fetch a list of Mars photos in a coroutine and listResult is the result.
-//                val listResult = marsPhotosRepository.getMarsPhotos()
-//                val result = marsPhotosRepository.getMarsPhotos()[0]
+                // Fetch a list of Mars photos in a coroutine.
                 MarsUiState.Success(
-//                    // A string of the number of photos retrieved
-//                    "Success: ${listResult.size} Mars photos retrieved"
-//                    // URL of the first photo
-//                    "Success: ${result.imgSrc}"
-//                    // A single photo
-//                    marsPhotosRepository.getMarsPhotos()[0]
-                    // All photos
                             marsPhotosRepository.getMarsPhotos()
                 )
             } catch (e: IOException) {
