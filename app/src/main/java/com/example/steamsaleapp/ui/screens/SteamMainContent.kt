@@ -24,9 +24,7 @@ import com.example.steamsaleapp.ui.screens.commonstates.Loading
 import com.example.steamsaleapp.viewmodel.SteamUiState
 import com.example.steamsaleapp.viewmodel.SteamViewModel
 
-/**
- * SteamMainContent displaying status or result.
- */
+/** [SteamMainContent] displaying status or result. */
 @Composable
 fun SteamMainContent(
     modifier: Modifier = Modifier
@@ -46,6 +44,7 @@ fun SteamMainContent(
     }
 }
 
+/** [SteamGameDetailsCard] displaying game details. */
 @Composable
 fun SteamGameDetailsCard(
     gameDetails: Data,
@@ -78,9 +77,7 @@ fun SteamGameDetailsCard(
     }
 }
 
-/**
- * SteamGameCard displaying game details.
- */
+/** [SteamGamesListCard] displaying game details. */
 @Composable
 fun SteamGamesListCard(
     game: App,
@@ -95,9 +92,7 @@ fun SteamGamesListCard(
     }
 }
 
-/**
- * SteamSaleTable displaying list of games.
- */
+/** [SteamGamesListGrid] displaying list of games. */
 @Composable
 fun SteamGamesListGrid(
     games: Applist,

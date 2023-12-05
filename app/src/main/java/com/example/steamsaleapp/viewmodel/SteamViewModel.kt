@@ -10,15 +10,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.steamsaleapp.SteamSaleApplication
-import com.example.steamsaleapp.data.SteamGamesListRepository
+import com.example.steamsaleapp.data.SteamRepository
 import com.example.steamsaleapp.model.SteamGamesList
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-/**
- * UI state for the SteamMainContent screen
- */
+/** UI state for the SteamMainContent screen */
 sealed interface SteamUiState {
     // Requires primary constructor parameter. val gamesList
     data class Success(val gamesList: SteamGamesList) : SteamUiState
@@ -27,28 +25,22 @@ sealed interface SteamUiState {
     object Empty : SteamUiState
 }
 
-class SteamViewModel(private val steamGamesListRepository: SteamGamesListRepository) : ViewModel(){
+class SteamViewModel(private val steamRepository: SteamRepository) : ViewModel(){
     /** The mutable State that stores the status of the most recent request */
     var steamUiState: SteamUiState by mutableStateOf(SteamUiState.Empty)
         private set
 
-//    /**
-//     * Call getSteamGamesList() on init so we can display status immediately.
-//     */
-//    init {
-//        getSteamGamesList()
-//    }
+//    /** Call getSteamGamesList() on init so we can display status immediately. */
+//    init {getSteamGamesList()}
 
-    /**
-     * Gets Steam games list from the Steam API Retrofit service
-     */
+    /** Gets Steam games list from the Steam API Retrofit service */
     fun getSteamGamesList() {
         viewModelScope.launch {
             steamUiState = SteamUiState.Loading
             steamUiState = try {
                 // Fetch the list of Steam games in a coroutine.
                 SteamUiState.Success(
-                    steamGamesListRepository.getSteamGamesList()
+                    steamRepository.getSteamGamesList()
                 )
             } catch (e: IOException) {
                 SteamUiState.Error
@@ -58,16 +50,14 @@ class SteamViewModel(private val steamGamesListRepository: SteamGamesListReposit
         }
     }
 
-//    /**
-//     * Gets Steam games details from the Steam API Retrofit service
-//     */
+//    /** Gets Steam games details from the Steam API Retrofit service */
 //    fun getGameDetails() {
 //        viewModelScope.launch {
 //            steamUiState = SteamUiState.Loading
 //            steamUiState = try {
 //                // Fetch the game details in a coroutine.
 //                SteamUiState.Success(
-//                    steamGamesListRepository.getSteamGamesList()
+//                    steamRepository.getSteamGameDetails(1325200)
 //                )
 //            } catch (e: IOException) {
 //                SteamUiState.Error
@@ -81,8 +71,8 @@ class SteamViewModel(private val steamGamesListRepository: SteamGamesListReposit
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as SteamSaleApplication)
-                val steamGamesListRepository = application.container.steamGamesListRepository
-                SteamViewModel(steamGamesListRepository = steamGamesListRepository)
+                val steamGamesListRepository = application.container.steamRepository
+                SteamViewModel(steamRepository = steamGamesListRepository)
             }
         }
     }

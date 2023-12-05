@@ -1,6 +1,5 @@
 package com.example.steamsaleapp.model
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

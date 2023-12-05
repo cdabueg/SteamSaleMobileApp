@@ -1,11 +1,9 @@
 package com.example.steamsaleapp.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** Using kotlinx.serialization */
+/** [SteamGamesList] using kotlinx.serialization */
 @Serializable
 data class SteamGamesList(
     @SerialName("applist")
