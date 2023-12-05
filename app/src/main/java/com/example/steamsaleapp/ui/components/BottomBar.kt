@@ -16,12 +16,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.steamsaleapp.ui.screens.SearchForm
+import com.example.steamsaleapp.viewmodel.SteamViewModel
 
 @Composable
 fun BottomBar(){
     var search by rememberSaveable { mutableStateOf("") }
     val showDialog = remember { mutableStateOf(false) }
+    val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
+    val refreshAction = steamViewModel::getSteamGamesList
 
     // Dialog box for search form
     if (showDialog.value) {
@@ -43,7 +47,9 @@ fun BottomBar(){
             // Search button
             IconButton(
                 modifier = Modifier,
-                onClick = { showDialog.value = true }
+                onClick = {
+                    showDialog.value = true
+                }
             ) {
                 Icon(
                     Icons.Filled.Search,
@@ -51,10 +57,12 @@ fun BottomBar(){
                 )
             }
             Spacer(Modifier.weight(1f))
-            // Reset button
+            // Refresh button
             IconButton(
                 modifier = Modifier,
-                onClick = { /* do something */ }
+                onClick = {
+                    refreshAction()
+                }
             ) {
                 Icon(
                     Icons.Filled.Refresh,
@@ -66,7 +74,7 @@ fun BottomBar(){
             IconButton(
                 modifier = Modifier,
                 onClick = {
-
+                    /* do something */
                 }
             ) {
                 Icon(

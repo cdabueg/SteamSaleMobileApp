@@ -41,11 +41,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(innerPadding),
                         ) {
-                            val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
-                            SteamMainContent(
-                                steamUiState = steamViewModel.steamUiState,
-                                retryAction = steamViewModel::getSteamGamesList,
-                            )
+                            SteamMainContent()
                         }
                     }
                 }

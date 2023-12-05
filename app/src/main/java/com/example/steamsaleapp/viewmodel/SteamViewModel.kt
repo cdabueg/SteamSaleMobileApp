@@ -24,19 +24,20 @@ sealed interface SteamUiState {
     data class Success(val gamesList: SteamGamesList) : SteamUiState
     object Error : SteamUiState
     object Loading : SteamUiState
+    object Empty : SteamUiState
 }
 
 class SteamViewModel(private val steamGamesListRepository: SteamGamesListRepository) : ViewModel(){
     /** The mutable State that stores the status of the most recent request */
-    var steamUiState: SteamUiState by mutableStateOf(SteamUiState.Loading)
+    var steamUiState: SteamUiState by mutableStateOf(SteamUiState.Empty)
         private set
 
-    /**
-     * Call getSteamGamesList() on init so we can display status immediately.
-     */
-    init {
-        getSteamGamesList()
-    }
+//    /**
+//     * Call getSteamGamesList() on init so we can display status immediately.
+//     */
+//    init {
+//        getSteamGamesList()
+//    }
 
     /**
      * Gets Steam games list from the Steam API Retrofit service

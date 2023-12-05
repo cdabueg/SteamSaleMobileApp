@@ -14,23 +14,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.steamsaleapp.model.App
 import com.example.steamsaleapp.model.Applist
 import com.example.steamsaleapp.model.Data
+import com.example.steamsaleapp.ui.screens.commonstates.Empty
 import com.example.steamsaleapp.ui.screens.commonstates.Error
 import com.example.steamsaleapp.ui.screens.commonstates.Loading
 import com.example.steamsaleapp.viewmodel.SteamUiState
+import com.example.steamsaleapp.viewmodel.SteamViewModel
 
 /**
  * SteamMainContent displaying status or result.
  */
 @Composable
 fun SteamMainContent(
-    steamUiState: SteamUiState,
-    retryAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
+    val steamUiState = steamViewModel.steamUiState
+    val retryAction = steamViewModel::getSteamGamesList
+
     when (steamUiState) {
+        is SteamUiState.Empty -> Empty(modifier = modifier.fillMaxSize())
         is SteamUiState.Loading -> Loading(modifier = modifier.fillMaxSize())
         is SteamUiState.Error -> Error(retryAction, modifier = modifier.fillMaxSize())
         is SteamUiState.Success -> SteamGamesListGrid(
