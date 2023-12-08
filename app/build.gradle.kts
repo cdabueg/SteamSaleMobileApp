@@ -66,15 +66,15 @@ dependencies {
 
     // Lifecycle
     val lifecycle_version = "2.6.2"
-        // ViewModel
+    // ViewModel
 //    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-        // ViewModel utilities for Compose
+    // ViewModel utilities for Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
-        // LiveData
+    // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-        // Lifecycles only (without ViewModel or LiveData)
+    // Lifecycles only (without ViewModel or LiveData)
 //    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
-        // Lifecycle utilities for Compose
+    // Lifecycle utilities for Compose
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
 
     // Retrofit
