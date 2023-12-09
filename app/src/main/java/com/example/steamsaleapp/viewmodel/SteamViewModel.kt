@@ -11,8 +11,11 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.steamsaleapp.SteamSaleApplication
 import com.example.steamsaleapp.data.SteamRepository
+import com.example.steamsaleapp.model.App
+import com.example.steamsaleapp.model.DataFiltered
 import com.example.steamsaleapp.model.SteamGameDetails
 import com.example.steamsaleapp.model.SteamGamesList
+import com.example.steamsaleapp.ui.screens.commonstates.Empty
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
@@ -68,7 +71,19 @@ class SteamViewModel(private val steamRepository: SteamRepository) : ViewModel()
         viewModelScope.launch {
             try {
                 val gameDetails = steamRepository.getSteamGameDetails(1325200)
-                db.collection("games").add(gameDetails.x1325200.data)
+                val gameFilteredDetails = DataFiltered(
+                    name = gameDetails.x1325200.data.name,
+                    shortDescription = gameDetails.x1325200.data.shortDescription,
+                    capsuleImagev5 = gameDetails.x1325200.data.capsuleImagev5,
+                    background = gameDetails.x1325200.data.background,
+                    releaseDate = gameDetails.x1325200.data.releaseDate,
+                    categories = gameDetails.x1325200.data.categories,
+                    genres = gameDetails.x1325200.data.genres,
+                    developers = gameDetails.x1325200.data.developers,
+                    publishers = gameDetails.x1325200.data.publishers,
+                    platforms = gameDetails.x1325200.data.platforms
+                )
+                db.collection("games").add(gameFilteredDetails)
             } catch (e: IOException) {
                 SteamUiState.Error
             } catch (e: HttpException) {
@@ -96,11 +111,19 @@ class SteamViewModel(private val steamRepository: SteamRepository) : ViewModel()
                     val gameDetails = steamRepository.getSteamGameDetails(1325200)
                     // Check if the game has a non-zero discount
                     if (gameDetails.x1325200.data.priceOverview?.discountPercent != 0) {
-                        // Parse the game details
-//                        val gameMap = parseGameData(gameDetails.toString())
-
-                        // Add the game details to the database
-                        db.collection("games").add(gameDetails.x1325200.data)
+                        val gameFilteredDetails = DataFiltered(
+                            name = gameDetails.x1325200.data.name,
+                            shortDescription = gameDetails.x1325200.data.shortDescription,
+                            capsuleImagev5 = gameDetails.x1325200.data.capsuleImagev5,
+                            background = gameDetails.x1325200.data.background,
+                            releaseDate = gameDetails.x1325200.data.releaseDate,
+                            categories = gameDetails.x1325200.data.categories,
+                            genres = gameDetails.x1325200.data.genres,
+                            developers = gameDetails.x1325200.data.developers,
+                            publishers = gameDetails.x1325200.data.publishers,
+                            platforms = gameDetails.x1325200.data.platforms
+                        )
+                        db.collection("games").add(gameFilteredDetails)
                         gamesAddedAmount++
                     }
                 }
@@ -111,32 +134,6 @@ class SteamViewModel(private val steamRepository: SteamRepository) : ViewModel()
             }
         }
     }
-
-//    fun parseGameData(gameData: String): HashMap<String, Any> {
-//        val json = Json { ignoreUnknownKeys = true }
-//        val gameMap = HashMap<String, Any>()
-//
-//        // Parse JSON and extract required fields
-//        val jsonObject = json.decodeFromString<JsonObject>(gameData)
-//        val data = jsonObject["1325200"]?.jsonObject?.get("data")?.jsonObject
-//
-//        if (data != null) {
-//            gameMap["name"] = data["name"]?.jsonPrimitive?.contentOrNull ?: ""
-//            gameMap["shortDescription"] = data["short_description"]?.jsonPrimitive?.contentOrNull ?: ""
-//            gameMap["capsuleImagev5"] = data["capsule_imagev5"]?.jsonPrimitive?.contentOrNull ?: ""
-//            gameMap["background"] = data["background"]?.jsonPrimitive?.contentOrNull ?: ""
-//            gameMap["releaseDate"] = data["release_date"]?.jsonObject?.get("date")?.jsonPrimitive?.contentOrNull ?: ""
-//            gameMap["categories"] = data["categories"]?.jsonArray?.map { it.jsonObject["description"]?.jsonPrimitive?.contentOrNull }
-//            gameMap["genres"] = data["genres"]?.jsonArray?.map { it.jsonObject["description"]?.jsonPrimitive?.contentOrNull }
-//            gameMap["developers"] = data["developers"]?.jsonArray?.map { it.jsonPrimitive?.contentOrNull }
-//            gameMap["publishers"] = data["publishers"]?.jsonArray?.map { it.jsonPrimitive?.contentOrNull }
-//            gameMap["platforms"] = data["platforms"]?.jsonObject?.toMap()
-//
-//            // Add more fields as needed
-//        }
-//
-//        return gameMap
-//    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

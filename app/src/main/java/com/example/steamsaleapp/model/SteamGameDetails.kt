@@ -4,6 +4,30 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class DataFiltered(
+    @SerialName("name")
+    val name: String? = "",
+    @SerialName("short_description")
+    val shortDescription: String? = "",
+    @SerialName("capsule_imagev5")
+    val capsuleImagev5: String? = "",
+    @SerialName("background")
+    val background: String? = "",
+    @SerialName("release_date")
+    val releaseDate: ReleaseDate? = ReleaseDate(),
+    @SerialName("categories")
+    val categories: List<Category?>? = listOf(),
+    @SerialName("genres")
+    val genres: List<Genre?>? = listOf(),
+    @SerialName("developers")
+    val developers: List<String?>? = listOf(),
+    @SerialName("publishers")
+    val publishers: List<String?>? = listOf(),
+    @SerialName("platforms")
+    val platforms: Platforms? = Platforms()
+)
+
+@Serializable
 data class SteamGameDetails(
     @SerialName("1325200")
     val x1325200: X1325200 = X1325200()
@@ -15,6 +39,7 @@ data class X1325200(
     val success: Boolean? = false,
     @SerialName("data")
     val `data`: Data = Data()
+
 )
 
 @Serializable
