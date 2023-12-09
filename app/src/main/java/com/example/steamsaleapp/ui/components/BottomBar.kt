@@ -27,7 +27,8 @@ fun BottomBar(){
     val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
 //    val refreshAction = steamViewModel::getSteamGamesList
     val refreshAction = steamViewModel::getGameDetails
-
+    val populateDb = steamViewModel::populateDb
+    val testAddToDb = steamViewModel::testAddToDb
     // Dialog box for search form
     if (showDialog.value) {
         Dialog(onDismissRequest = {showDialog.value = false}) {
@@ -75,7 +76,7 @@ fun BottomBar(){
             IconButton(
                 modifier = Modifier,
                 onClick = {
-                    /* do something */
+                    testAddToDb()
                 }
             ) {
                 Icon(
@@ -87,3 +88,4 @@ fun BottomBar(){
         },
     )
 }
+
