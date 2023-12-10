@@ -27,11 +27,32 @@ data class DataFiltered(
     val platforms: Platforms? = Platforms()
 )
 
+// Sample wrapper 1
+@Serializable
+data class SteamGameWrapper(
+//    @SerialName("")
+    val steamGameDetails: Map<String, List<SteamGameDetails>>
+)
+
+//// Sample wrapper 2
+//@Serializable
+//data class SteamGameDetailsWrapper(
+//    val gameId: String,
+//    val steamGameDetails: SteamGameDetails = SteamGameDetails()
+//)
+
+//val wrapper = SteamGameDetailsWrapper("customGameId")
+//val serializedString = Json.encodeToString(wrapper)
+//val deserializedWrapper = Json.decodeFromString<SteamGameDetailsWrapper>(serializedString)
+
+// TODO: Make @SerialName("1325200") dynamic
 @Serializable
 data class SteamGameDetails(
     @SerialName("1325200")
+//    @SerialName("gameId")
     val gameData: GameData = GameData()
 )
+
 
 @Serializable
 data class GameData(
