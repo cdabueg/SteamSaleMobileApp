@@ -1,5 +1,6 @@
 package com.example.steamsaleapp.ui.screens
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -58,26 +60,50 @@ fun SteamGameDetailsCard(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        Text(text = "Name: ${gameDetails.name}")
-        Text(text = "Description: ${gameDetails.shortDescription}")
-        Text(text = "LogoUrl: ${gameDetails.capsuleImagev5}")
-        Text(text = "BackgroundUrl: ${gameDetails.background}")
-        Text(text = "Release Date: ${gameDetails.releaseDate?.date}")
-        Text(text = "Categories: ${gameDetails.categories?.map { "${it?.description}" }?.joinToString(separator = ", ")}")
-        Text(text = "Genres: ${gameDetails.genres?.map { "${it?.description}" }?.joinToString(separator = ", ")}")
-        Text(text = "Developers: ${gameDetails.developers?.joinToString(separator = ", ")}")
-        Text(text = "Publishers: ${gameDetails.publishers?.joinToString(separator = ", ")}")
-        val platforms = mutableListOf<String>()
-        if (gameDetails.platforms?.windows == true) {
-            platforms.add("Windows")
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Text(text = "Name: ${gameDetails.name}")
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(text = "Description: ${gameDetails.shortDescription}")
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(text = "LogoUrl: ${gameDetails.capsuleImagev5}")
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(text = "BackgroundUrl: ${gameDetails.background}")
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(text = "Release Date: ${gameDetails.releaseDate?.date}")
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(
+                text = "Categories: ${
+                    gameDetails.categories?.map { "${it?.description}" }
+                        ?.joinToString(separator = ", ")
+                }"
+            )
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(
+                text = "Genres: ${
+                    gameDetails.genres?.map { "${it?.description}" }?.joinToString(separator = ", ")
+                }"
+            )
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(text = "Developers: ${gameDetails.developers?.joinToString(separator = ", ")}")
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            Text(text = "Publishers: ${gameDetails.publishers?.joinToString(separator = ", ")}")
+            Divider(modifier = Modifier.padding(vertical = 1.dp))
+            val platforms = mutableListOf<String>()
+            if (gameDetails.platforms?.windows == true) {
+                platforms.add("Windows")
+            }
+            if (gameDetails.platforms?.mac == true) {
+                platforms.add("Mac")
+            }
+            if (gameDetails.platforms?.linux == true) {
+                platforms.add("Linux")
+            }
+            Text(text = "Platforms: ${platforms.joinToString(separator = ", ")}")
         }
-        if (gameDetails.platforms?.mac == true) {
-            platforms.add("Mac")
-        }
-        if (gameDetails.platforms?.linux == true) {
-            platforms.add("Linux")
-        }
-        Text(text = "Platforms: ${platforms.joinToString(separator = ", ")}")
     }
 }
 

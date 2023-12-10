@@ -6,7 +6,6 @@ import com.example.steamsaleapp.data.DefaultSteamGamesListContainer
 import com.example.steamsaleapp.data.SteamGameContainer
 import com.example.steamsaleapp.data.SteamGamesListContainer
 
-// TODO: Switch application container to display table of games and details
 class SteamSaleApplication : Application() {
     lateinit var listContainer: SteamGamesListContainer
     lateinit var gameContainer: SteamGameContainer
