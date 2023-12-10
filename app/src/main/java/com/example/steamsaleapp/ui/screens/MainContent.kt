@@ -22,19 +22,16 @@ import com.example.steamsaleapp.ui.screens.commonstates.Empty
 import com.example.steamsaleapp.ui.screens.commonstates.Error
 import com.example.steamsaleapp.ui.screens.commonstates.Loading
 import com.example.steamsaleapp.viewmodel.SteamUiState
-import com.example.steamsaleapp.viewmodel.SteamViewModel
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
+import com.example.steamsaleapp.viewmodel.MainViewModel
 
-/** [SteamMainContent] displaying status or result. */
+/** [MainContent] displaying status or result. */
 @Composable
-fun SteamMainContent(
+fun MainContent(
     modifier: Modifier = Modifier
 ) {
-    val steamViewModel: SteamViewModel = viewModel(factory = SteamViewModel.Factory)
-    val steamUiState = steamViewModel.steamUiState
-//    val refreshAction = steamViewModel::getSteamGamesList
-    val refreshAction = steamViewModel::getGameDetails
+    val mainViewModel: MainViewModel = viewModel(factory = MainViewModel.Factory)
+    val steamUiState = mainViewModel.steamUiState
+    val refreshAction = mainViewModel::getGameDetails
 
     when (steamUiState) {
         is SteamUiState.Empty -> Empty(modifier = modifier.fillMaxSize())
@@ -45,7 +42,7 @@ fun SteamMainContent(
             modifier
         )
         is SteamUiState.SuccessDetails -> SteamGameDetailsCard(
-            steamUiState.gamesDetails.x1325200.data,
+            steamUiState.gamesDetails.gameData.data,
             modifier
         )
     }
@@ -124,56 +121,3 @@ fun SteamGamesListGrid(
         }
     }
 }
-
-
-//Button(onClick = {
-//    isIconChanged = !isIconChanged
-//
-//    val beerDocRef =
-//        fsInstance.collection("favorites").document(beerItem.id.toString())
-//
-//    // adding a beer to firestore document collection
-//    if (isIconChanged) {
-//        beerDocRef.set(beerItem)
-//            .addOnSuccessListener {
-//                Log.d("MJB", "Inserted ${beerItem.name}")
-//            }
-//            .addOnFailureListener { e ->
-//                Log.d("Error", "${e.message}")
-//            }
-//    }else{
-//        beerDocRef.delete()
-//            .addOnSuccessListener {
-//                Log.d("MJB", "Deleted ${beerItem.name}")
-//            }
-//            .addOnFailureListener{ e->
-//                Log.d("Error", "${e.message}")
-//            }
-//    }
-//}
-//) {
-//    Icon(
-//        modifier = Modifier
-//            .size(24.dp)
-//            .scale(2.5f),
-//        imageVector = if (isIconChanged) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-//        contentDescription = "Add a farvoite"
-//    )
-//}
-
-//// Create a new user with a first and last name
-//val user = hashMapOf(
-//    "first" to "Ada",
-//    "last" to "Lovelace",
-//    "born" to 1815
-//)
-//
-//// Add a new document with a generated ID
-//db.collection("users")
-//.add(user)
-//.addOnSuccessListener { documentReference ->
-//    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-//}
-//.addOnFailureListener { e ->
-//    Log.w(TAG, "Error adding document", e)
-//}

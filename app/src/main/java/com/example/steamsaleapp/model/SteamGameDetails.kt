@@ -30,11 +30,11 @@ data class DataFiltered(
 @Serializable
 data class SteamGameDetails(
     @SerialName("1325200")
-    val x1325200: X1325200 = X1325200()
+    val gameData: GameData = GameData()
 )
 
 @Serializable
-data class X1325200(
+data class GameData(
     @SerialName("success")
     val success: Boolean? = false,
     @SerialName("data")
@@ -51,7 +51,7 @@ data class Data(
     @SerialName("steam_appid")
     val steamAppid: Int? = 0,
     @SerialName("required_age")
-    val requiredAge: String? = "",
+    val requiredAge: Int? = 0,
     @SerialName("is_free")
     val isFree: Boolean? = false,
     @SerialName("detailed_description")
@@ -324,12 +324,12 @@ data class ContentDescriptors(
 //@Serializable
 //data class SteamGameDetails(
 //    @SerialName("1325200")
-//    val x1325200: X1325200? = X1325200()
+//    val gameData: GameData? = GameData()
 ////    @SerialName("id")
 ////    var id: Int? = 0,
 //) {
 //    @Serializable
-//    data class X1325200(
+//    data class GameData(
 //        @SerialName("success")
 //        val success: Boolean? = false,
 //        @SerialName("data")

@@ -13,12 +13,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.steamsaleapp.ui.components.BottomBar
 import com.example.steamsaleapp.ui.components.TopBar
-import com.example.steamsaleapp.ui.screens.SteamMainContent
+import com.example.steamsaleapp.ui.screens.MainContent
 import com.example.steamsaleapp.ui.theme.SteamSaleAppTheme
-import com.example.steamsaleapp.viewmodel.SteamViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -41,7 +39,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(innerPadding),
                         ) {
-                            SteamMainContent()
+                            MainContent()
                         }
                     }
                 }
