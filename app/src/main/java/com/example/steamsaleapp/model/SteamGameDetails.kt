@@ -2,30 +2,7 @@ package com.example.steamsaleapp.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-@Serializable
-data class DataFiltered(
-    @SerialName("name")
-    val name: String? = "",
-    @SerialName("short_description")
-    val shortDescription: String? = "",
-    @SerialName("capsule_imagev5")
-    val capsuleImagev5: String? = "",
-    @SerialName("background")
-    val background: String? = "",
-    @SerialName("release_date")
-    val releaseDate: ReleaseDate? = ReleaseDate(),
-    @SerialName("categories")
-    val categories: List<Category?>? = listOf(),
-    @SerialName("genres")
-    val genres: List<Genre?>? = listOf(),
-    @SerialName("developers")
-    val developers: List<String?>? = listOf(),
-    @SerialName("publishers")
-    val publishers: List<String?>? = listOf(),
-    @SerialName("platforms")
-    val platforms: Platforms? = Platforms()
-)
+import kotlinx.serialization.json.JsonElement
 
 // TODO: Make @SerialName("1325200") dynamic
 @Serializable
@@ -35,14 +12,12 @@ data class SteamGameDetails(
     val gameData: GameData = GameData()
 )
 
-
 @Serializable
 data class GameData(
     @SerialName("success")
     val success: Boolean? = false,
     @SerialName("data")
     val `data`: Data = Data()
-
 )
 
 @Serializable
@@ -76,11 +51,14 @@ data class Data(
     @SerialName("website")
     val website: String? = "",
     @SerialName("pc_requirements")
-    val pcRequirements: PcRequirements? = PcRequirements(),
+//    val pcRequirements: PcRequirements? = PcRequirements(),
+    val pcRequirements: JsonElement? = null,
     @SerialName("mac_requirements")
-    val macRequirements: MacRequirements? = MacRequirements(),
+//    val macRequirements: MacRequirements? = MacRequirements(),
+    val macRequirements: JsonElement? = null,
     @SerialName("linux_requirements")
-    val linuxRequirements: LinuxRequirements? = LinuxRequirements(),
+//    val linuxRequirements: LinuxRequirements? = LinuxRequirements(),
+    val linuxRequirements: JsonElement? = null,
     @SerialName("legal_notice")
     val legalNotice: String? = "",
     @SerialName("developers")

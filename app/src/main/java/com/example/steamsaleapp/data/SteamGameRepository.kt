@@ -1,5 +1,6 @@
 package com.example.steamsaleapp.data
 
+import com.example.steamsaleapp.model.GameData
 import com.example.steamsaleapp.model.SteamGameDetails
 import com.example.steamsaleapp.network.SteamGameDetailsService
 
@@ -7,6 +8,8 @@ import com.example.steamsaleapp.network.SteamGameDetailsService
 interface SteamGameRepository {
     /** Fetches [SteamGameDetails] from steamAPI. */
     suspend fun getSteamGameDetails(appid: Int): SteamGameDetails
+
+    suspend fun getSteamGameHash(appid: Int): HashMap<String, GameData>
 }
 
 class NetworkSteamGameRepository(
@@ -14,4 +17,6 @@ class NetworkSteamGameRepository(
 ) : SteamGameRepository {
     /** Fetches [SteamGameDetails] from steamAPI. */
     override suspend fun getSteamGameDetails(appid: Int): SteamGameDetails = steamGameDetailsService.fetchSteamGameDetails(appid)
+
+    override suspend fun getSteamGameHash(appid: Int): HashMap<String, GameData> = steamGameDetailsService.fetchSteamGameHash(appid)
 }

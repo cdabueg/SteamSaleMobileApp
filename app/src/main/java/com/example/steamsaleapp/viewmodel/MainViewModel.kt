@@ -17,8 +17,11 @@ import com.example.steamsaleapp.model.DataFiltered
 import com.example.steamsaleapp.model.SteamGameDetails
 import com.example.steamsaleapp.model.SteamGamesList
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.AggregateSource
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -71,40 +74,81 @@ class MainViewModel(
         viewModelScope.launch {
             steamUiState = SteamUiState.Loading
             try {
-                val numberOfGamesToUpdate = 5
+                val maxGamesCount: Long = 10
+                var currentGamesCount = getGamesCount()
+                Log.d("updateDb", "currentGamesCount: $currentGamesCount")
                 // Fetch the list of Steam games in a coroutine.
                 val gameList = steamGamesListRepository.getSteamGamesList()
                 // Filter out games with empty names
                 val filteredGameList = gameList.applist.apps.filter { it.name.isNotEmpty() }
-                val limitGameList = filteredGameList.take(numberOfGamesToUpdate)
                 // Loop through the list of games
-                for (app in limitGameList) {
-                    Log.i("MainViewModel", "Game name: ${app.name}")
+                for (app in filteredGameList) {
+                    Log.d("updateDb", "appid: ${app.appid}")
+                    // Check if the maximum games count has been reached
+                    if (currentGamesCount >= maxGamesCount) {
+                        Log.d("updateDb", "Break because of currentGamesCount")
+                        break // Exit the loop if the limit is reached
+                    }
                     // Get the game details
-//                    val gameDetails = steamGameRepository.getSteamGameDetails(app.appid)
-//                    // Check if the game has a non-zero discount
-//                    if (gameDetails.gameData.data.priceOverview?.discountPercent != 0) {
-//                        val gameFilteredDetails = DataFiltered(
-//                            name = gameDetails.gameData.data.name,
-//                            shortDescription = gameDetails.gameData.data.shortDescription,
-//                            capsuleImagev5 = gameDetails.gameData.data.capsuleImagev5,
-//                            background = gameDetails.gameData.data.background,
-//                            releaseDate = gameDetails.gameData.data.releaseDate,
-//                            categories = gameDetails.gameData.data.categories,
-//                            genres = gameDetails.gameData.data.genres,
-//                            developers = gameDetails.gameData.data.developers,
-//                            publishers = gameDetails.gameData.data.publishers,
-//                            platforms = gameDetails.gameData.data.platforms
-//                        )
-//                        db.collection("games").add(gameFilteredDetails)
-//                    }
+                    val gameDetails = steamGameRepository.getSteamGameHash(app.appid)
+                    // Check if the game ID exists in the database and if the game is on sale
+                    if (!gameInCollection(app.appid) && gameDetails["${app.appid}"]?.data?.priceOverview?.discountPercent != 0) {
+                        val gameFilteredDetails = DataFiltered(
+                            gameId = app.appid,
+                            name = gameDetails["${app.appid}"]?.data?.name,
+                            priceOverview = gameDetails["${app.appid}"]?.data?.priceOverview,
+                            shortDescription = gameDetails["${app.appid}"]?.data?.shortDescription,
+                            capsuleImagev5 = gameDetails["${app.appid}"]?.data?.capsuleImagev5,
+                            background = gameDetails["${app.appid}"]?.data?.background,
+                            releaseDate = gameDetails["${app.appid}"]?.data?.releaseDate,
+                            categories = gameDetails["${app.appid}"]?.data?.categories,
+                            genres = gameDetails["${app.appid}"]?.data?.genres,
+                            developers = gameDetails["${app.appid}"]?.data?.developers,
+                            publishers = gameDetails["${app.appid}"]?.data?.publishers,
+                            platforms = gameDetails["${app.appid}"]?.data?.platforms
+                        )
+                        // Add the game details to the database
+                        db.collection("games").add(gameFilteredDetails)
+                        // Add the game ID to the list of game IDs
+                        db.collection("gameIds").add(mapOf("gameId" to app.appid))
+                        // Increment the games count
+                        currentGamesCount++
+                    }
                 }
             } catch (e: IOException) {
                 SteamUiState.Error
             } catch (e: HttpException) {
                 SteamUiState.Error
             }
+            steamUiState = SteamUiState.Empty
         }
+    }
+
+    private suspend fun gameInCollection(gameIdToSearch: Int): Boolean {
+        val firestore = FirebaseFirestore.getInstance()
+        val collection = firestore.collection("gameIds")
+
+        // Searching for the document with the given gameId
+        val query = collection.whereEqualTo("gameId", gameIdToSearch)
+        val result = query.get().await()
+
+        // Checking if the result contains any documents
+        Log.d("gameInCollection", "${result.documents.isNotEmpty()}")
+        return result.documents.isNotEmpty()
+    }
+
+    private fun getGamesCount(): Long {
+        Log.d("getGamesCount", "getGamesCount called")
+        val query = db.collection("gameIds")
+        val countQuery = query.count()
+        var count: Long = 0
+        countQuery.get(AggregateSource.SERVER).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Count fetched successfully
+                count = task.result.count
+            }
+        }
+        return count
     }
 
     companion object {
