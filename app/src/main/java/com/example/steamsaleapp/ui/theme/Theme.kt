@@ -37,6 +37,13 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+/**
+ * Composable function to apply theme for the SteamSaleApp.
+ * 
+ * @param darkTheme A Boolean flag indicating if the dark theme should be applied. Defaults to system theme settings.
+ * @param dynamicColor A Boolean flag to enable dynamic coloring on Android 12 and above. Defaults to true.
+ * @param content The content of the UI that will be wrapped in this theme.
+ */
 @Composable
 fun SteamSaleAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -44,27 +51,57 @@ fun SteamSaleAppTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    // Determine the appropriate color scheme based on the provided flags and system capabilities.
+    val colorScheme = getColorScheme(darkTheme, dynamicColor)
     val view = LocalView.current
+    
+    // Apply system UI changes if not in preview mode.
     if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
+       updateSystemUi(view, colorScheme, darkTheme)
     }
 
+    // Apply the Material theme with the selected color scheme and predefined typography.
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
         content = content
     )
+}
+
+/**
+ * Determines the color scheme based on the dark theme preference and availability of dynamic colors.
+ * 
+ * @param darkTheme Indicates whether the dark theme is preferred.
+ * @param dynamicColor Indicates whether to use dynamic color (available on Android 12+).
+ * @return The chosen ColorScheme.
+ */
+@Composable
+private fun getColorScheme(darkTheme: Boolean, dynamicColor: Boolean): ColorScheme {
+    val context = LocalContext.current
+    return when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
+}
+
+/**
+ * Updates the system UI elements like status bar color and icon theme to match the app's theme.
+ * 
+ * @param view The current view context.
+ * @param colorScheme The color scheme being applied to the app.
+ * @param darkTheme Indicates whether the dark theme is applied.
+ */
+private fun updateSystemUi(view: View, colorScheme: ColorScheme, darkTheme: Boolean) {
+    SideEffect {
+        val window = (view.context as Activity).window
+
+        // Set the status bar color to match the primary color of the theme
+        window.statusBarColor = colorScheme.primary.toArgb()
+
+        //Adjust the appearance of status bar icons based on the theme.
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+    }
 }
