@@ -21,8 +21,10 @@ data class DataFiltered(
     val gameId: Int? = 0,
     @SerialName("name")
     val name: String? = "",
-    @SerialName("price_overview")
-    val priceOverview: PriceOverview? = PriceOverview(),
+    @SerialName("final")
+    val finalPrice: Int? = 0,
+    @SerialName("discount_percent")
+    val discountPercent: Int? = 0,
     @SerialName("short_description")
     val shortDescription: String? = "",
     @SerialName("capsule_imagev5")

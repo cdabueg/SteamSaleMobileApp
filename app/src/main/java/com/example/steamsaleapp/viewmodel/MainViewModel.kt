@@ -14,6 +14,7 @@ import com.example.steamsaleapp.SteamSaleApplication
 import com.example.steamsaleapp.data.SteamGameRepository
 import com.example.steamsaleapp.data.SteamGamesListRepository
 import com.example.steamsaleapp.model.DataFiltered
+import com.example.steamsaleapp.model.GameData
 import com.example.steamsaleapp.model.SteamGameDetails
 import com.example.steamsaleapp.model.SteamGamesList
 import com.google.firebase.Firebase
@@ -29,7 +30,7 @@ import java.io.IOException
 sealed interface SteamUiState {
     // Requires primary constructor parameter. val gamesList
     data class SuccessList(val gamesList: SteamGamesList) : SteamUiState
-    data class SuccessDetails(val gamesDetails: SteamGameDetails) : SteamUiState
+    data class SuccessDetails(val gamesDetails: HashMap<String, GameData>) : SteamUiState
     object Error : SteamUiState
     object Loading : SteamUiState
     object Empty : SteamUiState
@@ -52,14 +53,18 @@ class MainViewModel(
 
     /** Gets Steam games details from the Steam API Retrofit service */
     fun getGameDetails() {
+        Log.d("getGameDetails", "getGameDetails called")
         viewModelScope.launch {
             steamUiState = SteamUiState.Loading
             steamUiState = try {
+                // Sample game IDs:
+                // 1325200
+                // 1142710
+                val gameDetails = steamGameRepository.getSteamGameDetails(1325200)
+                Log.d("getGameDetails", "gameDetails: $gameDetails")
                 // Fetch the game details in a coroutine.
                 SteamUiState.SuccessDetails(
-//                    1325200
-//                    1142710
-                    steamGameRepository.getSteamGameDetails(1325200)
+                    gameDetails
                 )
             } catch (e: IOException) {
                 SteamUiState.Error
@@ -83,10 +88,8 @@ class MainViewModel(
                 val filteredGameList = gameList.applist.apps.filter { it.name.isNotEmpty() }
                 // Loop through the list of games
                 for (app in filteredGameList) {
-                    Log.d("updateDb", "appid: ${app.appid}")
                     // Check if the maximum games count has been reached
                     if (currentGamesCount >= maxGamesCount) {
-                        Log.d("updateDb", "Break because of currentGamesCount")
                         break // Exit the loop if the limit is reached
                     }
                     // Get the game details
@@ -96,7 +99,8 @@ class MainViewModel(
                         val gameFilteredDetails = DataFiltered(
                             gameId = app.appid,
                             name = gameDetails["${app.appid}"]?.data?.name,
-                            priceOverview = gameDetails["${app.appid}"]?.data?.priceOverview,
+                            discountPercent = gameDetails["${app.appid}"]?.data?.priceOverview?.discountPercent,
+                            finalPrice = gameDetails["${app.appid}"]?.data?.priceOverview?.final,
                             shortDescription = gameDetails["${app.appid}"]?.data?.shortDescription,
                             capsuleImagev5 = gameDetails["${app.appid}"]?.data?.capsuleImagev5,
                             background = gameDetails["${app.appid}"]?.data?.background,

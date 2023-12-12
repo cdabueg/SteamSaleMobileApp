@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface SteamGameDetailsService {
     @GET("appdetails")
-    suspend fun fetchSteamGameDetails(@Query("appids") appid: Int): SteamGameDetails
+    suspend fun fetchSteamGameDetails(@Query("appids") appid: Int): HashMap<String, GameData>
 
     @GET("appdetails")
     suspend fun fetchSteamGameHash(@Query("appids") appid: Int): HashMap<String, GameData>

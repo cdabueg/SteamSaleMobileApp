@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.steamsaleapp.model.App
 import com.example.steamsaleapp.model.Applist
 import com.example.steamsaleapp.model.Data
+import com.example.steamsaleapp.model.GameData
 import com.example.steamsaleapp.ui.screens.commonstates.Empty
 import com.example.steamsaleapp.ui.screens.commonstates.Error
 import com.example.steamsaleapp.ui.screens.commonstates.Loading
@@ -44,7 +45,7 @@ fun MainContent(
             modifier
         )
         is SteamUiState.SuccessDetails -> SteamGameDetailsCard(
-            steamUiState.gamesDetails.gameData.data,
+            steamUiState.gamesDetails,
             modifier
         )
     }
@@ -53,7 +54,7 @@ fun MainContent(
 /** [SteamGameDetailsCard] displaying game details. */
 @Composable
 fun SteamGameDetailsCard(
-    gameDetails: Data,
+    gameDetails: HashMap<String, GameData>,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -65,44 +66,33 @@ fun SteamGameDetailsCard(
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            Text(text = "Name: ${gameDetails.name}")
+            Text(text = "Name: ${gameDetails[gameDetails.keys.first()]?.data?.name}")
             Divider(modifier = Modifier.padding(vertical = 1.dp))
-            Text(text = "Description: ${gameDetails.shortDescription}")
+            Text(text = "Description: ${gameDetails[gameDetails.keys.first()]?.data?.shortDescription}")
             Divider(modifier = Modifier.padding(vertical = 1.dp))
-            Text(text = "LogoUrl: ${gameDetails.capsuleImagev5}")
+            Text(text = "LogoUrl: ${gameDetails[gameDetails.keys.first()]?.data?.capsuleImagev5}")
             Divider(modifier = Modifier.padding(vertical = 1.dp))
-            Text(text = "BackgroundUrl: ${gameDetails.background}")
+            Text(text = "BackgroundUrl: ${gameDetails[gameDetails.keys.first()]?.data?.background}")
             Divider(modifier = Modifier.padding(vertical = 1.dp))
-            Text(text = "Release Date: ${gameDetails.releaseDate?.date}")
+            Text(text = "Release Date: ${gameDetails[gameDetails.keys.first()]?.data?.releaseDate?.date}")
             Divider(modifier = Modifier.padding(vertical = 1.dp))
             Text(
                 text = "Categories: ${
-                    gameDetails.categories?.map { "${it?.description}" }
+                    gameDetails[gameDetails.keys.first()]?.data?.categories?.map { "${it?.description}" }
                         ?.joinToString(separator = ", ")
                 }"
             )
             Divider(modifier = Modifier.padding(vertical = 1.dp))
             Text(
                 text = "Genres: ${
-                    gameDetails.genres?.map { "${it?.description}" }?.joinToString(separator = ", ")
+                    gameDetails[gameDetails.keys.first()]?.data?.genres?.map { "${it?.description}" }?.joinToString(separator = ", ")
                 }"
             )
             Divider(modifier = Modifier.padding(vertical = 1.dp))
-            Text(text = "Developers: ${gameDetails.developers?.joinToString(separator = ", ")}")
+            Text(text = "Developers: ${gameDetails[gameDetails.keys.first()]?.data?.developers?.joinToString(separator = ", ")}")
             Divider(modifier = Modifier.padding(vertical = 1.dp))
-            Text(text = "Publishers: ${gameDetails.publishers?.joinToString(separator = ", ")}")
+            Text(text = "Publishers: ${gameDetails[gameDetails.keys.first()]?.data?.publishers?.joinToString(separator = ", ")}")
             Divider(modifier = Modifier.padding(vertical = 1.dp))
-            val platforms = mutableListOf<String>()
-            if (gameDetails.platforms?.windows == true) {
-                platforms.add("Windows")
-            }
-            if (gameDetails.platforms?.mac == true) {
-                platforms.add("Mac")
-            }
-            if (gameDetails.platforms?.linux == true) {
-                platforms.add("Linux")
-            }
-            Text(text = "Platforms: ${platforms.joinToString(separator = ", ")}")
         }
     }
 }
