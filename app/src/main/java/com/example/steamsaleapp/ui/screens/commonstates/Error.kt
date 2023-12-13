@@ -38,11 +38,3 @@ fun Error(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ErrorPreview() {
-    SteamSaleAppTheme {
-        Error({})
-    }
-}

@@ -4,35 +4,29 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FirestoreFields(
-    @SerialName("gameId")
-    val gameId: Int? = 0,
+data class FirestoreGameslist(
+    @SerialName("firestoreGames")
+    var firestoreGamesList: List<FirestoreGame> = listOf()
 )
 
 @Serializable
-data class GameId(
+data class FirestoreGame(
     @SerialName("gameId")
-    val gameId: Int? = 0,
-)
-
-@Serializable
-data class DataFiltered(
-    @SerialName("gameId")
-    val gameId: Int? = 0,
+    val gameId: Long? = 0,
     @SerialName("name")
     val name: String? = "",
     @SerialName("final")
-    val finalPrice: Int? = 0,
+    val finalPrice: Long? = 0,
     @SerialName("discount_percent")
-    val discountPercent: Int? = 0,
+    val discountPercent: Long? = 0,
     @SerialName("short_description")
     val shortDescription: String? = "",
     @SerialName("capsule_imagev5")
-    val capsuleImagev5: String? = "",
+    val logoUrl: String? = "",
     @SerialName("background")
     val background: String? = "",
     @SerialName("release_date")
-    val releaseDate: ReleaseDate? = ReleaseDate(),
+    val releaseDate: String? = "",
     @SerialName("categories")
     val categories: List<Category?>? = listOf(),
     @SerialName("genres")
@@ -43,4 +37,6 @@ data class DataFiltered(
     val publishers: List<String?>? = listOf(),
     @SerialName("platforms")
     val platforms: Platforms? = Platforms()
+//    val platforms: HashMap<String, Boolean>? = hashMapOf(),
+//    val platforms: String = "",
 )

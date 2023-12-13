@@ -25,7 +25,7 @@ fun BottomBar(){
     var search by rememberSaveable { mutableStateOf("") }
     val showDialog = remember { mutableStateOf(false) }
     val mainViewModel: MainViewModel = viewModel(factory = MainViewModel.Factory)
-    val refreshAction = mainViewModel::getGameDetails
+    val refreshAction = mainViewModel::getFirestoreGamesList
     val updateDb = mainViewModel::updateDb
     // Dialog box for search form
     if (showDialog.value) {
@@ -66,7 +66,7 @@ fun BottomBar(){
             ) {
                 Icon(
                     Icons.Filled.Refresh,
-                    contentDescription = "Reset List",
+                    contentDescription = "Refresh List",
                 )
             }
             Spacer(Modifier.weight(1f))

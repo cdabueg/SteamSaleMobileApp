@@ -304,7 +304,7 @@ data class ContentDescriptors(
 
 //// Using Moshi
 //@JsonClass(generateAdapter = true)
-//data class DataFiltered(
+//data class SteamGameDetails(
 //    val name: String? = "",
 //    @Json(name = "short_description")
 //    val shortDescription: String? = "",
